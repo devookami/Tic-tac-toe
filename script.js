@@ -8,54 +8,39 @@ const myModule = (function () {
         { name: "player1", piece: "O" },
         { name: "player2", piece: "X" },
     ];
-    let playersTurn;
+    let playerTurn = 1;
+
+    function printBoard() {
+        console.log(board.map((row) => row.join(" | ")).join("\n---------\n"));
+    }
+
+    function playPlayer(playerIndex, row, col) {
+        const currentPlayer = playerTurn === 1 ? players[0] : players[1];
+
+        if (playerTurn !== playerIndex + 1) {
+            console.log(`It's not ${currentPlayer.name}'s turn`);
+            return;
+        }
+
+        if (!(row < board.length && col >= 0 && col < board[row].length)) {
+            console.log("Wrong coordinates, play again");
+        } else if (board[row][col] !== null) {
+            console.log("The space is occupied, play again");
+        } else {
+            board[row][col] = currentPlayer.piece;
+            printBoard();
+            playerTurn = playerTurn === 1 ? 2 : 1;
+        }
+    }
+
     function createGame() {
-        function printBoard() {
-            console.log(
-                board.map((row) => row.join(" | ")).join("\n---------\n")
-            );
-        }
-
-        function playPlayer1(row, col) {
-            let playerPiece = players[0].piece;
-            if (playersTurn === 2) {
-                console.log("It's not your turn");
-                return;
-            }
-
-            if (!(row < board.length && col >= 0 && col < board[row].length)) {
-                console.log("Wrong cordinates, play again");
-            } else if (board[row][col] !== null) {
-                console.log("The space is occupied, play again");
-            } else {
-                board[row][col] = playerPiece;
-                printBoard();
-                playersTurn = 2;
-            }
-        }
-        function playPlayer2(row, col) {
-            let playerPiece = players[1].piece;
-            if (playersTurn === 1) {
-                console.log("It's not your turn");
-                return;
-            }
-            if (!(row < board.length && col >= 0 && col < board[row].length)) {
-                console.log("Wrong cordinates, play again");
-            } else if (board[row][col] !== null) {
-                console.log("The space is occupied, play again");
-            } else {
-                board[row][col] = playerPiece;
-                printBoard();
-                playersTurn = 1;
-            }
-        }
-
         printBoard();
         return {
-            playPlayer1,
-            playPlayer2,
+            playPlayer1: (row, col) => playPlayer(0, row, col),
+            playPlayer2: (row, col) => playPlayer(1, row, col),
         };
     }
+
     return {
         createGame: createGame,
     };
