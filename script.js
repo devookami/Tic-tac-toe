@@ -25,9 +25,9 @@ const myModule = (function () {
                 return;
             }
             if (!(row < board.length && col >= 0 && col < board[row].length)) {
-                console.log("Uneli ste pogresne kordinate");
+                console.log("Wrong cordinates");
             } else if (board[row][col] !== null) {
-                console.log("Polje je već zauzeto");
+                console.log("The space is occupied");
             } else {
                 board[row][col] = playerPiece;
                 printBoard();
