@@ -17,8 +17,13 @@ const myModule = (function () {
         }
 
         function playMove(playerIndex, row, col) {
-            checkPlayer(playerIndex);
-            let playerPiece = players[playerIndex].piece;
+            let player = players[playerIndex];
+            let playerPiece = player && player.piece ? player.piece : null;
+
+            if (!playerPiece) {
+                console.log("Player doesn't exist");
+                return;
+            }
             if (!(row < board.length && col >= 0 && col < board[row].length)) {
                 console.log("Uneli ste pogresne kordinate");
             } else if (board[row][col] !== null) {
@@ -29,14 +34,6 @@ const myModule = (function () {
             }
         }
 
-        function checkPlayer(playerIndex) {
-            if (playerIndex !== 0 && playerIndex !== 1) {
-                console.log(
-                    "Player 1 moves with index 0 and Player 2 moves with index 1"
-                );
-                return;
-            }
-        }
         printBoard();
         return {
             playMove,
