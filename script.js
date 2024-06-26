@@ -12,21 +12,30 @@ spaceList.forEach((element, index) => {
     element.addEventListener("click", () => {
         const row = Math.floor(index / 3);
         const col = index % 3;
-        console.log(
-            `Clicked space: ${index}, Corresponding coordinates: [${row}, ${col}]`
-        );
-
-        // Example action: Mark the board and update the element text
-       play(row, col, element);
-
-        let win = checkWin();
-        if (win === "O"){
-            console.log(`Player ${win} won`)
-        } else if(win === "X"){
-            console.log(`Player ${win} won`)
-        }
+        play(row, col, element);
     });
 });
+
+function play(row, col, element) {
+    if (board[row][col] === null) {
+        if (playerTurn === 1) {
+            board[row][col] = "O";
+            playerTurn = 2;
+        } else {
+            board[row][col] = "X";
+            playerTurn = 1;
+        }
+        element.textContent = board[row][col];
+    } else {
+        console.log("This space is already occupied.");
+    }
+    checkDraw();
+    let win = checkWin();
+    if (win) {
+        console.log(`Player ${win} won`);
+        resetBoard();
+    }
+}
 
 function checkWin() {
     for (let row = 0; row < board.length; row++) {
@@ -66,19 +75,31 @@ function checkWin() {
         return board[0][2];
     }
 
-    return null;
+    return false;
 }
-function play(row,col, element){
-    if (board[row][col] === null) {
-        if (playerTurn === 1) {
-            board[row][col] = "O";
-            playerTurn = 2;
-        } else {
-            board[row][col] = "X";
-            playerTurn = 1;
+
+function checkDraw() {
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board.length; j++) {
+            if (!(board[i][j] == null)) {
+                boardisFull++;
+            }
         }
-        element.textContent = board[row][col];
-    } else {
-        console.log("This space is already occupied.");
     }
+    if (boardisFull === 9) {
+        console.log("it's a draw");
+        resetBoard();
+    }
+}
+
+function resetBoard() {
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board.length; j++) {
+            board[i][j] = null;
+        }
+    }
+    for (let i = 0; i < spaceList.length; i++) {
+        spaceList.item(i).textContent = null;
+    }
+    playerTurn = 1;
 }
