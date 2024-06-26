@@ -1,97 +1,84 @@
-const myModule = (function () {
-    const board = [
-        [null, null, null],
-        [null, null, null],
-        [null, null, null],
-    ];
-    const players = [
-        { name: "player1", piece: "O" },
-        { name: "player2", piece: "X" },
-    ];
-    let playersTurn = 1;
+const board = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+];
+let playerTurn = 1;
+// Get all the space elements
+const spaceList = document.querySelectorAll(".space");
 
-    function printBoard() {
-        console.log(board.map((row) => row.join(" | ")).join("\n---------\n"));
-    }
+// Function to map DOM indexes to board coordinates
+spaceList.forEach((element, index) => {
+    element.addEventListener("click", () => {
+        const row = Math.floor(index / 3);
+        const col = index % 3;
+        console.log(
+            `Clicked space: ${index}, Corresponding coordinates: [${row}, ${col}]`
+        );
 
-    function playPlayer(playerIndex, row, col) {
-        const currentPlayer = playersTurn === 1 ? players[0] : players[1];
+        // Example action: Mark the board and update the element text
+       play(row, col, element);
 
-        if (playersTurn !== playerIndex + 1) {
-            console.log(`It's ${currentPlayer.name}'s turn`);
-            return;
+        let win = checkWin();
+        if (win === "O"){
+            console.log(`Player ${win} won`)
+        } else if(win === "X"){
+            console.log(`Player ${win} won`)
         }
+    });
+});
 
-        if (!(row < board.length && col >= 0 && col < board[row].length)) {
-            console.log("Wrong coordinates, play again");
-            return;
-        } else if (board[row][col] !== null) {
-            console.log("The space is occupied, play again");
-            return;
-        }
-
-        board[row][col] = currentPlayer.piece;
-        printBoard();
-        playersTurn = playersTurn === 1 ? 2 : 1;
-
-        // Check for a winner after each move
-        const winner = checkWin();
-        if (winner) {
-            console.log(`Player ${winner} wins!`);
-        }
-    }
-
-    function checkWin() {
-        // Check rows
-        for (let row = 0; row < board.length; row++) {
-            if (
-                board[row][0] &&
-                board[row][0] === board[row][1] &&
-                board[row][1] === board[row][2]
-            ) {
-                return board[row][0]; // Return the winning piece ("O" or "X")
-            }
-        }
-
-        // Check columns
-        for (let col = 0; col < board[0].length; col++) {
-            if (
-                board[0][col] &&
-                board[0][col] === board[1][col] &&
-                board[1][col] === board[2][col]
-            ) {
-                return board[0][col]; // Return the winning piece ("O" or "X")
-            }
-        }
-
-        // Check diagonals
+function checkWin() {
+    for (let row = 0; row < board.length; row++) {
         if (
-            board[0][0] &&
-            board[0][0] === board[1][1] &&
-            board[1][1] === board[2][2]
+            board[row][0] &&
+            board[row][0] === board[row][1] &&
+            board[row][1] === board[row][2]
         ) {
-            return board[0][0]; // Return the winning piece ("O" or "X")
+            return board[row][0];
         }
+    }
+
+    // Check columns
+    for (let col = 0; col < board[0].length; col++) {
         if (
-            board[0][2] &&
-            board[0][2] === board[1][1] &&
-            board[1][1] === board[2][0]
+            board[0][col] &&
+            board[0][col] === board[1][col] &&
+            board[1][col] === board[2][col]
         ) {
-            return board[0][2]; // Return the winning piece ("O" or "X")
+            return board[0][col];
         }
-
-        return null; // Return null if there is no winner
     }
 
-    function createGame() {
-        printBoard();
-        return {
-            playPlayer1: (row, col) => playPlayer(0, row, col),
-            playPlayer2: (row, col) => playPlayer(1, row, col),
-        };
+    // Check diagonals
+    if (
+        board[0][0] &&
+        board[0][0] === board[1][1] &&
+        board[1][1] === board[2][2]
+    ) {
+        return board[0][0];
+    }
+    if (
+        board[0][2] &&
+        board[0][2] === board[1][1] &&
+        board[1][1] === board[2][0]
+    ) {
+        return board[0][2];
     }
 
-    return {
-        createGame: createGame,
-    };
-})();
+    return null;
+}
+function play(row,col, element){
+    if (board[row][col] === null) {
+        if (playerTurn === 1) {
+            board[row][col] = "O";
+            playerTurn = 2;
+        } else {
+            board[row][col] = "X";
+            playerTurn = 1;
+        }
+        element.textContent = board[row][col];
+    } else {
+        console.log("This space is already occupied.");
+    }
+}

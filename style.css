@@ -1,92 +1,18 @@
-:root {
-    font-size: 10px;
+.container_board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    margin: 20px auto;
+    max-width: 320px;
 }
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-}
-h1 {
-    font-size: 2rem;
-    font-weight: bold;
-}
-h3{
-    font-size: 1.6rem;
-}
-button {
-    padding: 1.1rem 1.5rem;
-    font-size: 1.6rem;
-    font-weight: 500;
-    border: 2px solid black;
-    background: none;
-    border-radius: 2rem;
-    cursor: pointer;
-}
-header {
-    width: 100vw;
-    background-color: rgb(181, 200, 216);
-}
-header nav {
-    width: 80%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 2rem;
-}
-.nav_buttons {
-    margin-left: 10rem;
-}
-.nav_buttons button {
-    margin: 0 1rem;
-}
-main {
-    background-color: aquamarine;
-    width: 100%;
-    height: calc(100vh - 84px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-main .container{
-    display: none;
-    width: 50rem;
-    height: 50rem;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-#gameBoard {
-    margin-top: 2rem;
-    display: grid; 
-    grid-template-columns: 16rem 16rem 16rem; 
-    grid-template-rows: 16rem 16rem 16rem;
-    gap: 1rem; 
-    grid-template-areas: 
-      "space0 space1 space2"
-      "space3 space4 space5"
-      "space6 space7 space8"; 
-}
-.space0 { grid-area: space0; }
-.space1 { grid-area: space1; }
-.space2 { grid-area: space2; }
-.space3 { grid-area: space3; }
-.space4 { grid-area: space4; }
-.space5 { grid-area: space5; }
-.space6 { grid-area: space6; }
-.space7 { grid-area: space7; }
-.space8 { grid-area: space8; }
-
 .space {
-    width: 100%;
-    height: 16.34rem;
-    background-color: goldenrod;
-    border: 2px solid green;
-}
-.hidden{
-    display: none;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    border: 2px solid black;
+    cursor: pointer;
 }
